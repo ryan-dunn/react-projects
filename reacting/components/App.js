@@ -1,18 +1,25 @@
 var React = require('react');
 
 var ListItem = React.createClass({
-render: function(){
-return <h1>{this.props.listName}</h1>;
-}
-	});
+	render: function(){
+		return (
+			<div>
+			{this.props.items.map(item => (
+				<h1 key={item.id}>{item.text}</h1>
+			))
+			}
+			</div>
+			);
+		} 
+});
 
 
 var App = React.createClass({
 getInitialState: function(){
 	return {
-		name:'Ryan Dunnski',
+		name:'Ryan Dunn',
 		listVal: '',
-		itemOnList: ''
+		itemOnList: []
 	};
 },
 
@@ -29,15 +36,20 @@ onValueUpdate: function(e){
 },
 
 onSaveValue: function(){
-var listArray = [];
 
-listArray.push(document.getElementById('ToDoList').value);
 
-console.log(listArray);
+//listArray.push(document.getElementById('ToDoList').value);
 
-this.setState({
-	itemOnList: <ListItem key={listArray.length} listName={listArray} />
-})
+//console.log(listArray);
+
+var newItem = {
+	text: document.getElementById('ToDoList').value,
+	id: Date.now()
+}
+
+this.setState((prevState) => ({
+	itemOnList: prevState.itemOnList.concat(newItem)
+}))
 
 },
 
@@ -48,8 +60,10 @@ render: function(){
 			<h1 onClick={this.onNameClick}>{this.state.name}</h1>
 			<input id="ToDoList" onChange={this.onValueUpdate} />
 			<h1>{this.state.listVal}</h1>
-			<div>{this.state.itemOnList}</div>
+			<ListItem items={this.state.itemOnList} />
 			<button onClick={this.onSaveValue}>new task</button>
+
+
 		</div>
 		);
 	}
