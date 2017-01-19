@@ -2,15 +2,25 @@ var React = require('react');
 
 //Place new to-do item in JSX Element
 var ListItem = React.createClass({
+	onDelete: function(id){
+		var itemToDelete = this.props.items.find(function(deletedItem){
+			return deletedItem.id === id;
+		})
+	},
+
 	render: function(){
-		return (
+		console.log(this.onDelete);
+		return(
 			<div>
-				{this.props.items.map(item => (
-					<h1 key={item.id}>{item.text}</h1>
-				))}
+				{
+					this.props.items.map(
+						item =>
+							<div key={item.id + 1}><h1 key={item.id + 2}>{item.text}</h1> <button key={item.id + 3} onClick={this.onDelete.bind(null,this.props.items.id)}>Delete</button></div>
+						
+					)
+				}
 			</div>
-		);
-	} 
+	);} 
 });
 
 
